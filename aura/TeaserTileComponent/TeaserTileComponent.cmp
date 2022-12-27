@@ -1,0 +1,71 @@
+<!--
+  @description       : 
+  @author            : SFDX
+  @group             : 
+  @last modified on  : 10-18-2021
+  @last modified by  : SFDX
+-->
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,lightning:actionOverride,force:lightningQuickActionWithoutHeader,lightning:isUrlAddressable"
+                access="global"
+                controller="TeaserTileComponentController">
+    <!--HANDLER-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--ATTRIBUTE-->
+    <aura:attribute name="dimension" type ="String" />
+    <aura:attribute name="noOfTiles" type ="Integer" />
+    <aura:attribute name="carousel_Tiles" type ="list" />
+    <aura:attribute name="padding" type ="String" default="30px 15px 30px 15px" />
+    
+    <!-- LOADED ATTRIBUTE-->
+    <aura:attribute name="showLoadingSpinner" type="Boolean" default="false" />
+    
+    <!--START slds-card -->
+    <div class="">
+        <!--LOADING-->
+        <div class="exampleHolder" >
+            <aura:if isTrue="{! v.showLoadingSpinner }">
+                <lightning:spinner alternativeText="Loading" />
+            </aura:if>
+            <!--LOADING-->
+            <aura:if isTrue="{!if( v.noOfTiles != null,true,false )}">
+                <div class="slds-text-align_center">
+                    <aura:iteration items="{!v.carousel_Tiles}" var="tiles" indexVar="indx">
+                        <div class="slds-button">
+                            <div  style="{! 'width:'+tiles.Tile_Width__c+'; Padding: '+v.padding+';float:!if( tiles.Tile_Order__c le v.noOfTiles,left,none'}">
+                                <div class="tileTop" style="{! 'height :'+tiles.Tile_Image_Height__c}" onclick="{!c.clickHandler}" data-id="{!tiles.Url__c}" aura:id="thisDiv">
+                                    <img src="{!tiles.Tile_Image__c}"  style="{! 'height :'+tiles.Tile_Image_Height__c}" class="tileTop"/>
+                                </div>
+                                <div class="tilebottom" style="{! 'height :'+tiles.Tile_Content_Height__c+';color :'+tiles.Tile_Font_Color__c}">
+                                    <lightning:formattedRichText value="{!tiles.Description__c}" />
+                                </div>
+                            </div>
+                        </div>
+                        <aura:if isTrue="{!(indx + 1) % v.noOfTiles == 0 }">
+                            <div></div>
+                        </aura:if>
+                    </aura:iteration>
+                </div>
+                        
+                    
+                    <aura:set attribute="else">
+                        <div class="slds-text-align_center">
+                            <aura:iteration items="{!v.carousel_Tiles}" var="tiles">
+                                <div class="slds-button">
+                                    <div  class="tileStyle" style="{! 'width:'+tiles.Tile_Width__c+'; Padding: '+v.padding}">
+                                        <div class="tileTop" style="{! 'height :'+tiles.Tile_Image_Height__c}" onclick="{!c.clickHandler}" data-id="{!tiles.Url__c}" aura:id="thisDiv">
+                                            <img src="{!tiles.Tile_Image__c}"  style="{! 'height :'+tiles.Tile_Image_Height__c}" class="tileTop"/>
+                                        </div>
+                                        <div class="tilebottom" style="{! 'height :'+tiles.Tile_Content_Height__c+';color :'+tiles.Tile_Font_Color__c}">
+                                            <lightning:formattedRichText value="{!tiles.Description__c}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </aura:iteration>
+                        </div>
+                    </aura:set>
+                </aura:if> 
+
+            </div>
+        </div>    
+        <!--END-->
+    </aura:component>

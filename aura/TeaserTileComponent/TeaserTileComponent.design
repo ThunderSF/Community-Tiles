@@ -1,0 +1,5 @@
+<design:component >
+    <design:attribute name="dimension" label="Enter Carousel Name" />
+    <design:attribute name="noOfTiles" label="Max Columns Displayed" />
+    <design:attribute name="padding" label="Padding" description="Padding Order: Top Right Bottom Left" />
+</design:component>
